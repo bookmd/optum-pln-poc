@@ -1,6 +1,12 @@
 import React from 'react';
 
-interface HeaderProps {}
+interface HeaderProps {
+  searchTerm?: string;
+  onSearchChange?: (value: string) => void;
+  onSearchSubmit?: (e: React.FormEvent) => void;
+  suggestions?: Array<{ text: string }>;
+  onSuggestionClick?: (suggestion: string) => void;
+}
 
 const Header: React.FC<HeaderProps> = () => {
   return (

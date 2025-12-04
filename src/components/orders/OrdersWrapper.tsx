@@ -16,6 +16,7 @@ const orderIcons: Record<EHR.OrderType, string> = {
   LAB: orderLabSvg,
   RX: orderRxSvg,
   PROCEDURE: orderProcedureSvg,
+  REFERRAL: orderSvg,
 };
 
 export const OrdersWrapper: React.FC<{

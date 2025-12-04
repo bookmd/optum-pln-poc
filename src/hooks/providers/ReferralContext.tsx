@@ -1,15 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EHR } from "vim-os-js-browser/types";
 import { useVimOsContext } from "../useVimOsContext";
 import { useAppConfig } from "../useAppConfig";
-
-interface ReferralContext {
-  referral: EHR.Referral | undefined;
-}
-
-export const VimOSReferralContext = createContext<ReferralContext>({
-  referral: undefined,
-});
+import { VimOSReferralContext } from "./referral-context";
 
 export const VimOSReferralProvider: React.FC<React.PropsWithChildren> = ({
   children,

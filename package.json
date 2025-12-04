@@ -9,7 +9,9 @@
     "dev:functions": "wrangler pages dev --proxy=5173 --d1=DB:canvas-demo-db",
     "dev": "concurrently --raw -i \"npm:dev:functions\" \"npm:dev:vite\" ",
     "build": "tsc -b && vite build",
+    "deploy": "npm run build && wrangler pages deploy ./dist --project-name=optum-preferred-lab-network",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "vite preview"
   },
   "dependencies": {

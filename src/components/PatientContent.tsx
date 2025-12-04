@@ -26,7 +26,7 @@ export const PatientContent = () => {
         setProblemList(await patient.getProblemList());
       })();
     }
-  }, [patient?.identifiers.vimPatientId, setProblemList]);
+  }, [patient, setProblemList]);
 
   return (
     <div className="w-full">

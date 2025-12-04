@@ -1,15 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EHR } from "vim-os-js-browser/types";
 import { useVimOsContext } from "../useVimOsContext";
 import { useAppConfig } from "../useAppConfig";
-
-interface PatientContext {
-  patient: EHR.Patient | undefined;
-}
-
-export const VimOSPatientContext = createContext<PatientContext>({
-  patient: undefined,
-});
+import { VimOSPatientContext } from "./patient-context";
 
 export const VimOSPatientProvider: React.FC<React.PropsWithChildren> = ({
   children,
