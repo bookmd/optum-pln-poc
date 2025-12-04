@@ -1,7 +1,0 @@
-name = "optum-preferred-lab-network"
-pages_build_output_dir = "dist"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "canvas-demo-db"
-database_id = "a184dff5-29fc-4436-b7c6-64db9ba45b58"

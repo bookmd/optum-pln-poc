@@ -1,1 +1,1 @@
-{"root":["./functions/context-env.ts","./functions/token.ts","./functions/api/launch.ts","./functions/api/settings.ts","./functions/api/token.ts","./types/index.ts"],"version":"5.9.3"}
+{"root":["./functions/context-env.ts","./functions/token.ts","./functions/api/launch.ts","./functions/api/token.ts","./types/index.ts"],"version":"5.9.3"}
