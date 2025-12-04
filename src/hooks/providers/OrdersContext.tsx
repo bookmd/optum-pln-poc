@@ -1,15 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EHR } from "vim-os-js-browser/types";
 import { useVimOsContext } from "../useVimOsContext";
 import { useAppConfig } from "../useAppConfig";
-
-interface OrderContext {
-  orders: EHR.Order[] | undefined;
-}
-
-export const VimOSOrdersContext = createContext<OrderContext>({
-  orders: undefined,
-});
+import { VimOSOrdersContext } from "./orders-context";
 
 export const VimOSOrdersProvider: React.FC<React.PropsWithChildren> = ({
   children,

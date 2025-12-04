@@ -1,15 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EHR } from "vim-os-js-browser/types";
 import { useVimOsContext } from "../useVimOsContext";
 import { useAppConfig } from "../useAppConfig";
-
-interface ClaimContext {
-  claim: EHR.Claim| undefined;
-}
-
-export const VimOSClaimContext = createContext<ClaimContext>({
-  claim: undefined,
-});
+import { VimOSClaimContext } from "./claim-context";
 
 export const VimOSClaimProvider: React.FC<React.PropsWithChildren> = ({
   children,

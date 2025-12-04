@@ -1,15 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EHR } from "vim-os-js-browser/types";
 import { useVimOsContext } from "../useVimOsContext";
 import { useAppConfig } from "../useAppConfig";
-
-interface EncounterContext {
-  encounter: EHR.Encounter | undefined;
-}
-
-export const VimOSEncounterContext = createContext<EncounterContext>({
-  encounter: undefined,
-});
+import { VimOSEncounterContext } from "./encounter-context";
 
 export const VimOSEncounterProvider: React.FC<React.PropsWithChildren> = ({
   children,

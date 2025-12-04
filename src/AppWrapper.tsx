@@ -28,7 +28,7 @@ const createMockSDK = (): SDK => {
       subscribe: () => {},
       unsubscribe: () => {},
     },
-  } as SDK;
+  } as unknown as SDK;
 };
 
 export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {

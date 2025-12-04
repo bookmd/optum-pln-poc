@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useVimOsContext } from "./hooks/useVimOsContext";
 import { useVimOSOrders } from "./hooks/useOrders";
 import { useVimOSPatient } from "./hooks/usePatient";
-import { useToast } from "./hooks/use-toast";
 import { Toaster } from "./components/ui/toaster";
 import Header from "./components/Header";
 import VendorCard from "./components/VendorCard";
@@ -15,7 +14,6 @@ function App() {
   const vimOs = useVimOsContext();
   const { orders } = useVimOSOrders();
   const { patient } = useVimOSPatient();
-  const { toast } = useToast();
   const [isVimOsReady, setIsVimOsReady] = useState(false);
   
   console.log('Initial render - vimOs:', vimOs);
@@ -45,7 +43,11 @@ function App() {
       orders 
     });
 
-    const hasLabOrder = orders.some(order => order.basicInformation?.type === 'LAB');
+    const hasLabOrder = orders.some(order => 
+      order.basicInformation?.type === 'LAB' &&
+      (order.identifiers?.ehrOrderId == null || order.identifiers?.ehrOrderId === '') &&
+      (order.basicInformation?.createdDate == null || order.basicInformation?.createdDate === '')
+    );
     
     if (hasLabOrder && patient?.demographics?.firstName) {
       console.log('Found lab order, attempting to show notification...');
