@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { SDK } from "vim-os-js-browser/types";
 import { loadSdk } from "vim-os-js-browser";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,6 +10,7 @@ import {
   VimOSOrdersProvider,
   VimOSClaimProvider,
 } from "@/hooks/providers";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 // Set to true to bypass VimSDK loading in development
 const BYPASS_VIM_SDK = import.meta.env.VITE_BYPASS_VIM_SDK === "true" || false;
@@ -34,6 +35,8 @@ const createMockSDK = (): SDK => {
 export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [vimOS, setVimOS] = useState<SDK | undefined>(undefined);
   const [loadingError, setLoadingError] = useState<string | null>(null);
+  const hasTrackedLogin = useRef(false);
+  const { track, identify } = useAnalytics();
   
   useEffect(() => {
     // If bypass is enabled, use mock SDK immediately
@@ -66,6 +69,23 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  // Track #1: User Login - Track when session context is available
+  useEffect(() => {
+    if (vimOS?.sessionContext && !hasTrackedLogin.current) {
+      const vimUserId = vimOS.sessionContext.user?.identifiers?.vimUserID;
+      const organizationId = vimOS.sessionContext.organization?.identifiers?.id;
+
+      if (vimUserId) {
+        identify(vimUserId);
+        track("User Login", {
+          vimUserId,
+          organizationId,
+        });
+        hasTrackedLogin.current = true;
+      }
+    }
+  }, [vimOS, track, identify]);
 
   if (!vimOS) {
     return (

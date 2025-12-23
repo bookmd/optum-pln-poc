@@ -6,6 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppSettingsWrapper } from "./AppSettingsWrapper.tsx";
 import { LaunchHandler } from "./components/LaunchHandler.tsx";
 import ThankYou from "./components/ThankYou.tsx";
+import { initMixpanel } from "./hooks/useAnalytics";
+
+// Initialize Mixpanel before rendering the app
+initMixpanel();
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
