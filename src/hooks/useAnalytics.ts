@@ -25,17 +25,37 @@ export const initMixpanel = () => {
 };
 
 /**
+ * Sanitize properties - convert undefined/null values to "Null"
+ */
+const sanitizeProperties = (properties?: Record<string, unknown>): Record<string, unknown> => {
+  if (!properties) return {};
+  
+  return Object.fromEntries(
+    Object.entries(properties).map(([key, value]) => [
+      key,
+      value === undefined || value === null ? "Null" : value
+    ])
+  );
+};
+
+/**
  * Custom hook for tracking analytics events
  */
 export const useAnalytics = () => {
   const track = useCallback(
     (eventName: string, properties?: Record<string, unknown>) => {
-      if (!isInitialized) return; // Skip if not initialized
+      if (!isInitialized) {
+        console.warn("Mixpanel not initialized, skipping track:", eventName, properties);
+        return;
+      }
       try {
+        const sanitizedProperties = sanitizeProperties(properties);
+        console.log("Mixpanel tracking event:", eventName, sanitizedProperties);
         mixpanel.track(eventName, {
-          ...properties,
+          ...sanitizedProperties,
           timestamp: new Date().toISOString(),
         });
+        console.log("Mixpanel event tracked successfully:", eventName);
       } catch (error) {
         console.warn("Mixpanel track failed:", error);
       }

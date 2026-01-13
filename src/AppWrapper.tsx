@@ -78,7 +78,7 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       if (vimUserId) {
         identify(vimUserId);
-        track("User Login", {
+        track("optum_pln_user_login", {
           vimUserId,
           organizationId,
         });
