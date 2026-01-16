@@ -31,3 +31,6 @@ functions/**/*.js
 *.njsproj
 *.sln
 *.sw?
+
+# Documentation with sensitive info
+AUTHENTICATION_STORAGE.md
