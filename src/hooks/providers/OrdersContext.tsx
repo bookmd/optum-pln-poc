@@ -12,13 +12,15 @@ export const VimOSOrdersProvider: React.FC<React.PropsWithChildren> = ({
   const [orders, setOrders] = useState<EHR.Order[] | undefined>(undefined);
 
   useEffect(() => {
-    vimOS.ehr.subscribe("orders", (data) => {
+    const handleOrders = (data: EHR.Order[] | undefined) => {
       setOrders(data);
       updateNotification("orders", data ? 1 : 0);
-    });
+    };
+
+    vimOS.ehr.subscribe("orders", handleOrders);
 
     return () => {
-      vimOS.ehr.unsubscribe("orders", setOrders);
+      vimOS.ehr.unsubscribe("orders", handleOrders);
     };
   }, [vimOS, updateNotification]);
 

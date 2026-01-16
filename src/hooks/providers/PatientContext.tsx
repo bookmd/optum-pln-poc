@@ -12,13 +12,15 @@ export const VimOSPatientProvider: React.FC<React.PropsWithChildren> = ({
   const [patient, setPatient] = useState<EHR.Patient | undefined>(undefined);
 
   useEffect(() => {
-    vimOS.ehr.subscribe("patient", (data) => {
+    const handlePatient = (data: EHR.Patient | undefined) => {
       setPatient(data);
       updateNotification("patient", data ? 1 : 0);
-    });
+    };
+
+    vimOS.ehr.subscribe("patient", handlePatient);
 
     return () => {
-      vimOS.ehr.unsubscribe("patient", setPatient);
+      vimOS.ehr.unsubscribe("patient", handlePatient);
     };
   }, [vimOS, updateNotification]);
 

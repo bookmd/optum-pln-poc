@@ -47,7 +47,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
     return Response.json(tokenData);
   } catch (error) {
-    console.log("Error verifying token", { context });
+    console.error("Error verifying token", {
+      message: error instanceof Error ? error.message : String(error),
+    });
     throw error;
   }
 };
