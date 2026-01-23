@@ -1,8 +1,12 @@
 import { useCallback } from "react";
 import mixpanel, { type Config } from "mixpanel-browser";
 
-// Get token from environment variable
-const MIXPANEL_TOKEN = import.meta.env.VITE_MIXPANEL_TOKEN || "";
+// Get token from environment variable based on build mode
+// DEV mode (npm run dev) uses VITE_MIXPANEL_DEV_TOKEN
+// PROD mode (npm run build) uses VITE_MIXPANEL_PROD_TOKEN
+const MIXPANEL_TOKEN = import.meta.env.DEV
+  ? (import.meta.env.VITE_MIXPANEL_DEV_TOKEN || "")
+  : (import.meta.env.VITE_MIXPANEL_PROD_TOKEN || "");
 
 let isInitialized = false;
 
