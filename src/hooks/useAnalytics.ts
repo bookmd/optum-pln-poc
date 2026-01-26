@@ -88,6 +88,20 @@ export const useAnalytics = () => {
     []
   );
 
-  return { track, identify, setUserProperties };
+  /**
+   * Register super properties that will be sent with every event
+   * These persist for the session (stored in sessionStorage based on our config)
+   */
+  const register = useCallback((properties: Record<string, unknown>) => {
+    if (!isInitialized) return;
+    try {
+      const sanitizedProperties = sanitizeProperties(properties);
+      mixpanel.register(sanitizedProperties);
+    } catch (error) {
+      console.warn("Mixpanel register failed:", error);
+    }
+  }, []);
+
+  return { track, identify, setUserProperties, register };
 };
 

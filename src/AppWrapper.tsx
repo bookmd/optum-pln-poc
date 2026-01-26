@@ -36,7 +36,7 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [vimOS, setVimOS] = useState<SDK | undefined>(undefined);
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const hasTrackedLogin = useRef(false);
-  const { track, identify } = useAnalytics();
+  const { track, identify, register } = useAnalytics();
   
   useEffect(() => {
     // If bypass is enabled, use mock SDK immediately
@@ -75,17 +75,39 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (vimOS?.sessionContext && !hasTrackedLogin.current) {
       const vimUserId = vimOS.sessionContext.user?.identifiers?.vimUserID;
       const organizationId = vimOS.sessionContext.organization?.identifiers?.id;
+      const organizationName = vimOS.sessionContext.organization?.identifiers?.name;
+      const ehrType = vimOS.sessionContext.ehrType;
+      const ehrUsername = vimOS.sessionContext.user?.identifiers?.ehrUsername;
+      const roles = vimOS.sessionContext.user?.identifiers?.roles;
+      const npi = vimOS.sessionContext.user?.identifiers?.npi;
 
       if (vimUserId) {
         identify(vimUserId);
+        
+        // Register super properties - these will be sent with every event
+        register({
+          vimUserId,
+          ehrType,
+          organizationName,
+          organizationId,
+          ehrUsername,
+          role: roles?.join(", "),
+          npi,
+        });
+
         track("optum_pln_user_login", {
           vimUserId,
           organizationId,
+          organizationName,
+          ehrType,
+          ehrUsername,
+          role: roles?.join(", "),
+          npi,
         });
         hasTrackedLogin.current = true;
       }
     }
-  }, [vimOS, track, identify]);
+  }, [vimOS, track, identify, register]);
 
   if (!vimOS) {
     return (

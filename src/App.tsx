@@ -98,17 +98,18 @@ function App() {
   useEffect(function subscribeToAppOpenStatus() {
     if (!isVimOsReady) return;
 
-    const handleAppOpenStatus = () => {
+    const handleAppOpenStatus = (status?: { isAppOpen: boolean; appOpenTrigger?: string; appCloseTrigger?: string }) => {
       // Track every time app becomes visible (isAppOpen is true)
-      if (vimOs.hub.appState.isAppOpen) {
+      if (status?.isAppOpen) {
         const labOrder = orders?.find(order => order.basicInformation?.type === 'LAB');
         const ehrOrderId = labOrder?.identifiers?.ehrOrderId;
         const vimPatientId = patient?.identifiers?.vimPatientId;
         
-        console.log('App became visible in Vim Hub');
+        console.log('App became visible in Vim Hub, trigger:', status.appOpenTrigger);
         trackRef.current("optum_pln_app_opened_in_hub", {
           ehrOrderId,
           vimPatientId,
+          appOpenTrigger: status.appOpenTrigger,
         });
 
         // Mark that user has opened the app and hide notification badge
@@ -227,7 +228,7 @@ function App() {
         
         // Track notification shown
         if (!hasTrackedPopupShown.current) {
-          trackRef.current("optum_pln_popup_shown", {
+          trackRef.current("optum_pln_notification_attempted", {
             ehrOrderId,
             vimPatientId,
             notificationType: "in_app_toast",
@@ -257,7 +258,7 @@ function App() {
               callback: () => {
                 console.log('Opening app to select lab');
                 // Track #4: Select a Lab button clicked in popup
-                trackRef.current("optum_pln_popup_button_clicked", {
+                trackRef.current("optum_pln_notification_button_clicked", {
                   ehrOrderId,
                   vimPatientId,
                 });
@@ -273,7 +274,7 @@ function App() {
             console.log('📬 pushNotification.show() called successfully');
             // Track #3: Popup shown (only track once)
             if (!hasTrackedPopupShown.current) {
-              trackRef.current("optum_pln_popup_shown", {
+              trackRef.current("optum_pln_notification_attempted", {
                 ehrOrderId,
                 vimPatientId,
                 notificationType: "push_notification",
